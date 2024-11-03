@@ -27,7 +27,7 @@ interface FormData {
 const STORAGE_KEY = 'projectFormData';
 
 const initialFormData: FormData = {
-    studentName: '',
+    studentName: 'Rohit Kumar Yadav',
     rollNumber: '',
     semester: '',
     academicYear: '',
@@ -103,7 +103,7 @@ const renderProjectDetails = (formData: FormData, handleChange: (e: React.Change
                 <div className="space-y-2">
                     <Label className="text-sm md:text-base font-medium">Purpose</Label>
                     <Select
-                        value={formData.purpose}
+                        value={formData.purpose || ''}
                         onValueChange={(value) => handleSelectChange('purpose', value)}
                     >
                         <SelectTrigger className="h-11 md:h-12 text-sm md:text-base">
@@ -125,21 +125,28 @@ const renderProjectDetails = (formData: FormData, handleChange: (e: React.Change
 
                 {/* Subject Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {['Subject Name', 'Subject Code'].map((field) => (
-                        <div key={field} className="space-y-2">
-                            <Label className="text-sm md:text-base font-medium">
-                                {field}
-                            </Label>
-                            <Input
-                                id={field.toLowerCase().replace(' ', '')}
-                                name={field.toLowerCase().replace(' ', '')}
-                                value={formData[field.toLowerCase().replace(' ', '')] as string}
-                                onChange={handleChange}
-                                placeholder={`Enter ${field.toLowerCase()}`}
-                                className="h-11 md:h-12 text-sm md:text-base"
-                            />
-                        </div>
-                    ))}
+                    <div className="space-y-2">
+                        <Label className="text-sm md:text-base font-medium">Subject Code</Label>
+                        <Input
+                            id="subjectCode"
+                            name="subjectCode"
+                            value={formData.subjectCode}
+                            onChange={handleChange}
+                            placeholder="Enter subject code"
+                            className="h-11 md:h-12 text-sm md:text-base"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label className="text-sm md:text-base font-medium">Subject Name</Label>
+                        <Input
+                            id="subjectName"
+                            name="subjectName"
+                            value={formData.subjectName}
+                            onChange={handleChange}
+                            placeholder="Enter subject name"
+                            className="h-11 md:h-12 text-sm md:text-base"
+                        />
+                    </div>
                 </div>
 
                 <Separator className="my-6" />
@@ -171,7 +178,7 @@ const renderProjectDetails = (formData: FormData, handleChange: (e: React.Change
                                 Faculty Designation
                             </Label>
                             <Select
-                                value={formData.designation}
+                                value={formData.designation || ''}
                                 onValueChange={(value) => handleSelectChange('designation', value)}
                             >
                                 <SelectTrigger className="h-11 md:h-12 text-sm md:text-base">
@@ -239,21 +246,28 @@ const renderPersonalDetails = (formData: FormData, handleChange: (e: React.Chang
 
                 {/* Student Information */}
                 <div className="space-y-4">
-                    {['Student Name', 'Roll Number'].map((field) => (
-                        <div key={field} className="space-y-2">
-                            <Label className="text-sm md:text-base font-medium">
-                                {field}
-                            </Label>
-                            <Input
-                                id={field.toLowerCase().replace(' ', '')}
-                                name={field.toLowerCase().replace(' ', '')}
-                                value={formData[field.toLowerCase().replace(' ', '')] as string}
-                                onChange={handleChange}
-                                placeholder={`Enter your ${field.toLowerCase()}`}
-                                className="h-11 md:h-12 text-sm md:text-base rounded-lg"
-                            />
-                        </div>
-                    ))}
+                    <div className="space-y-2">
+                        <Label className="text-sm md:text-base font-medium">Student Name</Label>
+                        <Input
+                            id="studentName"
+                            name="studentName"
+                            value={formData.studentName}
+                            onChange={handleChange}
+                            placeholder="Enter student name"
+                            className="h-11 md:h-12 text-sm md:text-base"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label className="text-sm md:text-base font-medium">Roll Number</Label>
+                        <Input
+                            id="rollNumber"
+                            name="rollNumber"
+                            value={formData.rollNumber}
+                            onChange={handleChange}
+                            placeholder="Enter roll number"
+                            className="h-11 md:h-12 text-sm md:text-base"
+                        />
+                    </div>
                 </div>
 
                 {/* Course and Department Selection */}
@@ -267,7 +281,7 @@ const renderPersonalDetails = (formData: FormData, handleChange: (e: React.Chang
                                 {label}
                             </Label>
                             <Select
-                                value={formData[label.toLowerCase()] as string}
+                                value={String(formData[label.toLowerCase()] || '')}
                                 onValueChange={(value) => handleSelectChange(label.toLowerCase(), value)}
                             >
                                 <SelectTrigger className="h-11 md:h-12 text-sm md:text-base">
@@ -290,42 +304,55 @@ const renderPersonalDetails = (formData: FormData, handleChange: (e: React.Chang
                 </div>
 
                 {/* Semester and Academic Year */}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                        {
-                            label: 'Semester',
-                            options: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
-                        },
-                        {
-                            label: 'Academic Year',
-                            options: academicYears
-                        }
-                    ].map(({ label, options }) => (
-                        <div key={label} className="space-y-2">
-                            <Label className="text-sm md:text-base font-medium">
-                                {label}
-                            </Label>
-                            <Select
-                                value={formData[label.toLowerCase().replace(' ', '')] as string}
-                                onValueChange={(value) => handleSelectChange(label.toLowerCase().replace(' ', ''), value)}
-                            >
-                                <SelectTrigger className="h-11 md:h-12 text-sm md:text-base">
-                                    <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {options.map((option) => (
-                                        <SelectItem
-                                            key={option}
-                                            value={option}
-                                            className="text-sm md:text-base"
-                                        >
-                                            {option}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    ))}
+                    <div className='space-y-2'>
+
+                        <Label className='text-sm md:text-base font-medium'>Semester</Label>
+                        <Select
+                            value={formData.semester || ''}
+                            onValueChange={(value) => handleSelectChange('semester', value)}
+                        >
+                            <SelectTrigger className='h-11 md:h-12 text-sm md:text-base'>
+                                <SelectValue placeholder='Select semester' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'].map((semester) => (
+                                    <SelectItem
+                                        key={semester}
+                                        value={semester}
+                                        className='text-sm md:text-base'
+                                    >
+                                        {semester}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                    </div>
+                    {/* Academic Year */}
+                    <div className="space-y-2">
+                        <Label className="text-sm md:text-base font-medium">Academic Year</Label>
+                        <Select
+                            value={formData.academicYear || ''}
+                            onValueChange={(value) => handleSelectChange('academicYear', value)}
+                        >
+                            <SelectTrigger className="h-11 md:h-12 text-sm md:text-base">
+                                <SelectValue placeholder="Select academic year" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {academicYears.map((year) => (
+                                    <SelectItem
+                                        key={year}
+                                        value={year}
+                                        className="text-sm md:text-base"
+                                    >
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
             </div>
         </CardContent>
@@ -337,5 +364,3 @@ const renderPersonalDetails = (formData: FormData, handleChange: (e: React.Chang
 export { STORAGE_KEY, initialFormData, academicYears, departments, courses, purposes, designations };
 export type { FormData }
 export { renderProjectDetails, renderPersonalDetails };
-
-``
