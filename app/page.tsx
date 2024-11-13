@@ -7,6 +7,7 @@ import TitlePage from '@/components/title-page';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, FileText, Download, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 import { FormData } from '@/components/data-and-function';
 import { Toaster, toast } from 'react-hot-toast';
 
@@ -28,6 +29,7 @@ export default function Home() {
   }
 
   const handleDownload = async () => {
+
     if (typeof window !== 'undefined') {
       try {
         setIsDownloading(true);
@@ -36,7 +38,7 @@ export default function Home() {
           toast.error('Error generating PDF: Element not found');
           return;
         }
-        
+
         const opt = {
           filename: `${formData?.studentName} - ${formData?.subjectName} - Title Page.pdf`,
           image: { type: 'jpeg', quality: 1 },
@@ -53,9 +55,24 @@ export default function Home() {
           }
         };
         const html2pdf = (await import('html2pdf.js')).default;
-        await html2pdf().set(opt).from(element).save();
+        toast.promise(
+          html2pdf().set(opt).from(element).save(),
+          {
+            loading: 'Generating PDF...',
+            success: 'PDF generated successfully',
+            error: 'Error generating PDF'
+          }
+        );
+        if (html2pdf !== undefined) {
+          await html2pdf().set(opt).from(element).save();
+        }
       } catch (error) {
         console.error('Error generating PDF:', error);
+        if (error instanceof Error) {
+          toast.error('Error generating PDF: ' + error.message);
+        } else {
+          toast.error('Error generating PDF: An unknown error occurred');
+        }
       } finally {
         setIsDownloading(false);
       }

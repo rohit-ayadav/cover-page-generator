@@ -14,6 +14,7 @@ import { STORAGE_KEY, initialFormData } from './data-and-function';
 import { FormData } from './data-and-function';
 import { renderProjectDetails, renderPersonalDetails } from './data-and-function';
 import ErrorBoundary from './ui/error-boundry';
+import { toast } from 'react-hot-toast';
 interface ProjectFormProps {
     onSubmit: (data: any) => void;
 }
