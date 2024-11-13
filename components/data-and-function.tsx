@@ -27,17 +27,17 @@ interface FormData {
 const STORAGE_KEY = 'projectFormData';
 
 const initialFormData: FormData = {
-    studentName: 'Rohit Kumar Yadav',
+    studentName: '',
     rollNumber: '',
     semester: '',
-    academicYear: '',
+    academicYear: '2024-2025',
     facultyName: '',
     designation: '',
     subjectCode: '',
     subjectName: '',
     department: '',
     course: '',
-    purpose: '',
+    purpose: 'Project File',
     projectType: 'individual',
     tick: false,
 };
@@ -67,7 +67,6 @@ const courses = [
     'BACHELOR OF COMPUTER APPLICATION',
     'BACHELOR OF BUSINESS ADMINISTRATION',
     'BACHELOR OF SCIENCE'
-
 ];
 
 const purposes = [

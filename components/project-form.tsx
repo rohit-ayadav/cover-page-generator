@@ -120,40 +120,55 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onSubmit }) => {
                                             Back
                                         </Button>
                                     )}
-
-                                    {currentStep === 1 ? (
+                                    <div className="flex gap-3">
+                                        {/* an icon to clear the form */}
                                         <Button
                                             type="button"
                                             onClick={() => {
-                                                if (isStepOneValid()) {
-                                                    setCurrentStep(2);
-                                                    formData.tick = false;
-                                                }
+                                                setFormData(initialFormData);
+                                                setCurrentStep(1);
                                             }}
-                                            disabled={!isStepOneValid()}
+                                            variant="outline"
                                             className="flex-1 md:flex-none h-11 md:h-12 text-sm md:text-base"
                                         >
-                                            Next
-                                            <ChevronRight className="w-4 h-4 ml-2" />
+                                            Clear Form
                                         </Button>
-                                    ) : (
-                                        <Button
-                                            type="submit"
-                                            onClick={() => {
-                                                formData.tick = true;
-                                            }}
-                                            className="flex-1 md:flex-none h-11 md:h-12 text-sm md:text-base"
-                                        >
-                                            Generate Title Page
-                                            <Save className="w-4 h-4 ml-2" />
-                                        </Button>
-                                    )}
+
+
+                                        {currentStep === 1 ? (
+                                            <Button
+                                                type="button"
+                                                onClick={() => {
+                                                    if (isStepOneValid()) {
+                                                        setCurrentStep(2);
+                                                        formData.tick = false;
+                                                    }
+                                                }}
+                                                disabled={!isStepOneValid()}
+                                                className="flex-1 md:flex-none h-11 md:h-12 text-sm md:text-base"
+                                            >
+                                                Next
+                                                <ChevronRight className="w-4 h-4 ml-2" />
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                type="submit"
+                                                onClick={() => {
+                                                    formData.tick = true;
+                                                }}
+                                                className="flex-1 md:flex-none h-11 md:h-12 text-sm md:text-base"
+                                            >
+                                                Generate Title Page
+                                                <Save className="w-4 h-4 ml-2" />
+                                            </Button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </Card>
             </div>
-        </ErrorBoundary>
+        </ErrorBoundary >
     );
 }

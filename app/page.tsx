@@ -1,3 +1,5 @@
+//Source: app/page.tsx
+
 "use client";
 import React, { useState } from 'react';
 import { ProjectForm } from '@/components/project-form';
@@ -6,11 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, FileText, Download, CheckCircle, ArrowLeft } from 'lucide-react';
 import { FormData } from '@/components/data-and-function';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function Home() {
   const [formData, setFormData] = useState<FormData | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const MM_TO_PX = 3.7795275591;
 
   const handleFormSubmit = (data: FormData) => {
     if (data.tick === false) {
@@ -28,12 +32,25 @@ export default function Home() {
       try {
         setIsDownloading(true);
         const element = document.getElementById('title-page');
+        if (!element) {
+          toast.error('Error generating PDF: Element not found');
+          return;
+        }
+        
         const opt = {
-          margin: 1,
           filename: `${formData?.studentName} - ${formData?.subjectName} - Title Page.pdf`,
           image: { type: 'jpeg', quality: 1 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            width: 210 * MM_TO_PX, // A4 width in pixels
+            height: 297 * MM_TO_PX // A4 height in pixels
+          },
+          jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+          }
         };
         const html2pdf = (await import('html2pdf.js')).default;
         await html2pdf().set(opt).from(element).save();
@@ -71,6 +88,7 @@ export default function Home() {
   if (isValid(formData)) {
     return (
       <div className="min-h-screen bg-gray-50 py-4 md:py-8">
+
         <div className="container mx-auto px-4">
           <Button
             variant="ghost"
@@ -83,7 +101,7 @@ export default function Home() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Form
           </Button>
-          
+
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="p-4 bg-primary/5 border-b">
@@ -91,7 +109,7 @@ export default function Home() {
                   Preview Your Title Page
                 </h2>
               </div>
-              
+
               <div className="max-w-[800px] mx-auto p-4">
                 <div className="bg-white shadow-sm border rounded-lg">
                   <TitlePage data={formData} />
@@ -100,7 +118,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 px-4">
-              <Button 
+              <Button
                 onClick={handleDownload}
                 disabled={isDownloading}
                 className="w-full sm:w-auto"
@@ -108,8 +126,8 @@ export default function Home() {
                 <Download className="w-4 h-4 mr-2" />
                 {isDownloading ? 'Generating PDF...' : 'Download PDF'}
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => {
                   setFormData(null);
                   setShowForm(true);
@@ -127,6 +145,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 5000,
+          style: {
+            background: 'rgba(0, 0, 0, 0.8)',
+            color: '#fff'
+          }
+        }}
+      />
       {!showForm ? (
         <div className="container mx-auto px-4 py-8 md:py-16">
           <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
